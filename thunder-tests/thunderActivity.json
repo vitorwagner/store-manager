@@ -1,0 +1,16 @@
+[
+  {
+    "_id": "0a8062d0-7171-4e14-9aae-5a6c11ec91cd",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3001/products",
+    "url": "http://localhost:3001/products/99",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-21T18:16:45.790Z",
+    "modified": "2023-03-21T20:19:43.151Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  }
+]
