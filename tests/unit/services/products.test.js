@@ -40,7 +40,7 @@ describe("testa se o service de produtos", () => {
 
       const product = await ProductsService.getProductById(1);
 
-      expect(product).to.be.deep.equal(productMock);
+      expect(product.message).to.be.deep.equal(productMock);
     });
   });
 

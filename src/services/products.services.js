@@ -1,4 +1,3 @@
-const createError = require('http-errors');
 const productsModel = require('../models/products.model');
 
 async function getAllProducts() {
@@ -9,9 +8,9 @@ async function getAllProducts() {
 async function getProductById(id) {
   const product = await productsModel.getProductById(id);
   if (!product) {
-    throw new createError.NotFound('Product not found');
+    return { type: 'NOT_FOUND', message: 'Product not found' };
   }
-  return product;
+  return { type: null, message: product };
 }
 
 module.exports = {

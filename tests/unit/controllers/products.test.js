@@ -1,8 +1,7 @@
 const chai = require("chai");
 const sinon = require("sinon");
-// const connection = require("../../../src/db/connection");
 
-// chai.use(require("chai-as-promised"));
+chai.use(require("chai-as-promised"));
 chai.use(require("sinon-chai"));
 
 const { expect } = chai;
@@ -10,7 +9,6 @@ const { expect } = chai;
 const ProductsController = require("../../../src/controllers/products.controllers");
 const ProductsService = require("../../../src/services/products.services");
 const ProductsModel = require("../../../src/models/products.model");
-const errorHandler = require("../../../src/middlewares/errorHandler");
 
 const productsMock = [
   {
@@ -49,7 +47,7 @@ describe("testa se o controller de produtos", () => {
       const [productMock] = productsMock;
       const request = { params: { id: 1 } };
       const response = {};
-      sinon.stub(ProductsService, "getProductById").resolves(productMock);
+      sinon.stub(ProductsService, "getProductById").resolves({ type: null, message: productMock });
 
       response.status = sinon.stub().returns(response);
       response.json = sinon.stub().returns();
@@ -62,31 +60,17 @@ describe("testa se o controller de produtos", () => {
     it("retorna um erro quando não há um produto com este id", async () => {
       const request = { params: { id: 777 } };
       const response = {};
-      const next = sinon.stub();
       response.status = sinon.stub().returns(response);
       response.json = sinon.stub().returns();
 
       sinon.stub(ProductsModel, "getProductById").resolves(null);
       
-      await ProductsController.getProductById(request, response, next);
+      await ProductsController.getProductById(request, response);
 
-      // const errFunc = async () => {
-      //   throw new Error("hello");
-      // };
-      // await expect(errFunc()).to.be.rejectedWith(Error, "hello");
-      // try {
-      // } catch (error) {
-      //   expect(error).to.be.deep.equal({
-      //     message: "Product not found",
-      //     status: 404,
-      //   });
-      // }
-
-
-      // expect(response.status).to.have.been.calledWith(404);
-      // expect(response.json).to.have.been.calledWith({
-      //   message: "Product not found",
-      // });
+      expect(response.status).to.have.been.calledWith(404);
+      expect(response.json).to.have.been.calledWith({
+        message: "Product not found",
+      });
     });
   });
 
