@@ -17,8 +17,11 @@ async function getProductById(req, res) {
 
 async function postProduct(req, res) {
   const { name } = req.body;
-  const { id, productName } = await ProductsService.postProduct(name);
-  return res.status(201).json({ id, name: productName });
+  const { type, id, message } = await ProductsService.postProduct(name);
+
+  if (type) return res.status(errorMap.mapError(type)).json({ message });
+
+  return res.status(201).json({ id, name: message });
 }
 
 module.exports = {
