@@ -22,8 +22,22 @@ async function postProduct(name) {
   return { id, message: name };
 }
 
+async function updateProduct(id, name) {
+  const error = schema.validateName(name);
+  if (error.type) { return error; }
+
+  const affectedRows = await productsModel.updateProduct(id, name);
+
+  if (affectedRows === 0) {
+    return { type: 'NOT_FOUND', message: 'Product not found' };
+  }
+
+  return { type: null, message: name };
+}
+
 module.exports = {
   getAllProducts,
   getProductById,
   postProduct,
+  updateProduct,
 };

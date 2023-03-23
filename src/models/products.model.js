@@ -23,8 +23,17 @@ async function postProduct(name) {
   return insertId;
 }
 
+async function updateProduct(id, name) {
+  const [{ affectedRows }] = await connection.execute(
+    'UPDATE products SET name = ? WHERE id = ?',
+    [name, id],
+  );
+  return affectedRows;
+}
+
 module.exports = {
   getAllProducts,
   getProductById,
   postProduct,
+  updateProduct,
 };
