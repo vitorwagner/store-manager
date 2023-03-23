@@ -15,7 +15,14 @@ async function getProductById(req, res) {
   res.status(200).json(message);
 }
 
+async function postProduct(req, res) {
+  const { name } = req.body;
+  const { id, productName } = await ProductsService.postProduct(name);
+  return res.status(201).json({ id, name: productName });
+}
+
 module.exports = {
   getAllProducts,
   getProductById,
+  postProduct,
 };
