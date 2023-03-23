@@ -2,6 +2,19 @@ const salesModel = require('../models/sales.model');
 const productsModel = require('../models/products.model');
 const schema = require('./validations/validationsInputValues');
 
+async function getAllSales() {
+  const sales = await salesModel.getAllSales();
+  return sales;
+}
+
+async function getSalesById(id) {
+  const sale = await salesModel.getSaleById(id);
+  if (sale.length === 0) {
+    return { type: 'NOT_FOUND', message: 'Sale not found' };
+  }
+  return { type: null, message: sale };
+}
+
 async function postSaleProduct(products) {
   const error = schema.validateSaleProduct(products);
   if (error.type) { return error; }
@@ -26,4 +39,6 @@ async function postSaleProduct(products) {
 
 module.exports = {
   postSaleProduct,
+  getAllSales,
+  getSalesById,
 };
