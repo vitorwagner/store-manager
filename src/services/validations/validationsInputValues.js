@@ -1,4 +1,4 @@
-const { nameSchema } = require('./schemas');
+const { nameSchema, saleProductSchema } = require('./schemas');
 
 const validateName = (name) => {
   if (!name) {
@@ -14,6 +14,18 @@ const validateName = (name) => {
   return { type: null, message: '' };
 };
 
+const validateSaleProduct = (saleProduct) => {
+  const { error } = saleProductSchema.validate(saleProduct);
+  if (error) {
+    return {
+      type: error.message.includes('is required') ? 'NAME_IS_REQUIRED' : 'INVALID_VALUE',
+      message: error.message,
+    };
+  }
+  return { type: null, message: '' };
+};
+
 module.exports = {
   validateName,
+  validateSaleProduct,
 };
