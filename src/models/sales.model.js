@@ -28,17 +28,21 @@ async function postSale() {
 }
 
 async function postSaleProduct(saleId, productId, quantity) {
-  await connection.execute(
+  const [{ insertId }] = await connection.execute(
     'INSERT INTO sales_products (sale_id, product_id, quantity) VALUES (?, ?, ?)',
     [saleId, productId, quantity],
   );
+
+  return insertId;
 }
 
 async function updateSaleProduct(saleid, productId, quantity) {
-  await connection.execute(
+  const [{ affectedRows }] = await connection.execute(
     'UPDATE sales_products SET quantity = ? WHERE sale_id = ? AND product_id = ?',
     [quantity, saleid, productId],
-  );  
+  );
+
+  return affectedRows;
 }
 
 async function deleteSale(id) {
@@ -50,10 +54,11 @@ async function deleteSale(id) {
 }
 
 async function deleteSaleProduct(id) {
-  await connection.execute(
+  const [{ affectedRows }] = await connection.execute(
     'DELETE FROM sales_products WHERE sale_id = ?',
     [id],
   );
+  return affectedRows;
 }
 
 module.exports = {

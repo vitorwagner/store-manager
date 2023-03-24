@@ -36,8 +36,7 @@ describe("testa a camada Model para Sales", () => {
 
       expect(sales).to.be.deep.equal(salesMock);
     });
-  }
-  );
+  });
   describe("testa se getSaleById", () => {
     it("retorna uma venda pelo id", async () => {
       const [saleMock] = salesMock;
@@ -47,10 +46,78 @@ describe("testa a camada Model para Sales", () => {
 
       expect(sale).to.be.deep.equal(saleMock);
     });
-  }
-  );
+  });
+
+  describe("testa se postSale", () => {
+    it("retorna um id de venda", async () => {
+      const [saleMock] = salesMock;
+
+      sinon.stub(connection, "execute").resolves([{ insertId: 1 }]);
+
+      const insertId = await SalesModel.postSale(saleMock);
+
+      expect(insertId).to.be.deep.equal(1);
+    });
+  });
+
+  describe("testa se postSaleProduct", () => {
+    it("retorna um id de venda", async () => {
+      const [saleMock] = salesMock;
+
+      sinon.stub(connection, "execute").resolves([{ insertId: 1 }]);
+
+      const insertId = await SalesModel.postSaleProduct(
+        saleMock.saleId,
+        saleMock.productId,
+        saleMock.quantity
+      );
+
+      expect(insertId).to.be.deep.equal(1);
+    });
+  });
+
+  describe("testa se updateSaleProduct", () => {
+    it("atualiza a venda", async () => {
+      const [saleMock] = salesMock;
+
+      sinon.stub(connection, "execute").resolves([{ affectedRows: 1 }]);
+
+      const affectedRows = await SalesModel.updateSaleProduct(
+        saleMock.saleId,
+        saleMock.productId,
+        saleMock.quantity
+      );
+
+      expect(affectedRows).to.be.deep.equal(1);
+    });
+  });
+
+  describe("testa se deleteSale", () => {
+    it("deleta a venda pelo id", async () => {
+      const [saleMock] = salesMock;
+
+      sinon.stub(connection, "execute").resolves([{ affectedRows: 1 }]);
+
+      const affectedRows = await SalesModel.deleteSale(saleMock.saleId);
+
+      expect(affectedRows).to.be.deep.equal(1);
+    });
+  });
+
+  describe("testa se deleteSaleProduct", () => {
+    it("deleta a venda pelo id", async () => {
+      const [saleMock] = salesMock;
+
+      sinon.stub(connection, "execute").resolves([{ affectedRows: 1 }]);
+
+      const affectedRows = await SalesModel.deleteSaleProduct(saleMock.saleId);
+
+      expect(affectedRows).to.be.deep.equal(1);
+    });
+  });
+
+
   afterEach(() => {
-  sinon.restore();
-  }
-  );
+    sinon.restore();
+  });
 });
