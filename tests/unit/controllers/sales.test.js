@@ -66,10 +66,66 @@ describe("testa a camada Controller para Sales", () => {
       expect(response.status).to.have.been.calledWith(200);
       expect(response.json).to.have.been.calledWith(saleMock);
     });
+
+    it("retorna uma mensagem de erro quando não encontra uma venda", async () => {
+      const request = { params: { id: 777 } };
+      const response = {};
+
+      sinon
+        .stub(SalesService, "getSalesById")
+        .resolves({ type: "NOT_FOUND", message: "Sale not found" });
+
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+
+      await SalesController.getSaleById(request, response);
+
+      expect(response.status).to.have.been.calledWith(404);
+      expect(response.json).to.have.been.calledWith({
+        message: "Sale not found",
+      });
+    });
+  });
+
+  describe("testa se deleteSaleProduct", () => {
+    it("retorna uma mensagem de sucesso ao deletar uma venda", async () => {
+      const request = { params: { id: 1 } };
+      const response = {};
+
+      sinon
+        .stub(SalesService, "deleteSaleProduct")
+        .resolves({ type: null, message: null });
+
+      response.status = sinon.stub().returns(response);
+      response.end = sinon.stub().returns();
+
+      await SalesController.deleteSaleProduct(request, response);
+
+      expect(response.status).to.have.been.calledWith(204);
+      expect(response.end).to.have.been.calledOnce;
+    });
+
+    it("retorna uma mensagem de erro quando não encontra uma venda", async () => {
+      const request = { params: { id: 777 } };
+      const response = {};
+
+      sinon
+        .stub(SalesService, "deleteSaleProduct")
+        .resolves({ type: "NOT_FOUND", message: "Sale not found" });
+
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+
+      await SalesController.deleteSaleProduct(request, response);
+
+      expect(response.status).to.have.been.calledWith(404);
+      expect(response.json).to.have.been.calledWith({
+        message: "Sale not found",
+      });
+    });
   });
 
   afterEach(() => {
     sinon.restore();
   });
-}
-);
+});
