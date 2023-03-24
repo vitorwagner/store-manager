@@ -34,6 +34,13 @@ async function postSaleProduct(saleId, productId, quantity) {
   );
 }
 
+async function updateSaleProduct(saleid, productId, quantity) {
+  await connection.execute(
+    'UPDATE sales_products SET quantity = ? WHERE sale_id = ? AND product_id = ?',
+    [quantity, saleid, productId],
+  );  
+}
+
 async function deleteSale(id) {
   const [{ affectedRows }] = await connection.execute(
     'DELETE FROM sales WHERE id = ?',
@@ -56,4 +63,5 @@ module.exports = {
   getSaleById,
   deleteSale,
   deleteSaleProduct,
+  updateSaleProduct,
 };

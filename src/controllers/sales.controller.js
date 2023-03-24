@@ -24,6 +24,16 @@ async function postSaleProduct(req, res) {
   return res.status(201).json(message);
 }
 
+async function updateSaleProduct(req, res) {
+  const { id } = req.params;
+  const products = req.body;
+  const { type, message } = await SalesService.updateSaleProduct(id, products);
+
+  if (type) return res.status(errorMap.mapError(type)).json({ message });
+
+  return res.status(200).json(message);
+}
+
 async function deleteSaleProduct(req, res) {
   const { id } = req.params;
   const { type, message } = await SalesService.deleteSaleProduct(id);
@@ -38,4 +48,5 @@ module.exports = {
   getAllSales,
   getSaleById,
   deleteSaleProduct,
+  updateSaleProduct,
 };
