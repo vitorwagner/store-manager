@@ -81,8 +81,6 @@ describe("testa se o service de sales", () => {
     });
   });
 
-
-
   describe("testa se deleteSaleProduct", () => {
     it("retorna a mensagem correta quando deleta uma venda", async () => {
       sinon.stub(SalesModel, "deleteSale").resolves(1);
@@ -100,6 +98,17 @@ describe("testa se o service de sales", () => {
       expect(message).to.be.deep.equal({
         type: "NOT_FOUND",
         message: "Sale not found",
+      });
+    });
+
+    it("retorna um erro quando o id da venda não é válido", async () => {
+      sinon.stub(SalesModel, "deleteSale").resolves(0);
+
+      const message = await SalesService.deleteSaleProduct("teste");
+
+      expect(message).to.be.deep.equal({
+        type: "INVALID_VALUE",
+        message: '"id" must be a number',
       });
     });
   });

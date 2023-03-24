@@ -2,6 +2,9 @@ const Joi = require('joi');
 
 const nameSchema = Joi.string().min(5).required();
 
+const idSchema = Joi.number().integer().min(1).required()
+  .label('id');
+
 const saleProductSchema = Joi.array().items(Joi.object({
   productId: Joi.number().integer().required().label('productId'),
   quantity: Joi.number().integer().min(1).required()
@@ -11,4 +14,5 @@ const saleProductSchema = Joi.array().items(Joi.object({
 module.exports = {
   nameSchema,
   saleProductSchema,
+  idSchema,
 };

@@ -63,6 +63,11 @@ async function updateSaleProduct(id, products) {
 }
 
 async function deleteSaleProduct(id) {
+  const error = schema.validateId(id);
+  if (error.type) {
+    return error;
+  }
+  
   const affectedRows = await salesModel.deleteSale(id);
   
   if (affectedRows === 0) {

@@ -1,4 +1,4 @@
-const { nameSchema, saleProductSchema } = require('./schemas');
+const { nameSchema, saleProductSchema, idSchema } = require('./schemas');
 
 const validateName = (name) => {
   if (!name) {
@@ -9,6 +9,17 @@ const validateName = (name) => {
     return {
       type: 'INVALID_VALUE',
       message: '"name" length must be at least 5 characters long',
+    };
+  }
+  return { type: null, message: '' };
+};
+
+const validateId = (id) => {
+  const { error } = idSchema.validate(id);
+  if (error) {
+    return {
+      type: 'INVALID_VALUE',
+      message: error.message,
     };
   }
   return { type: null, message: '' };
@@ -28,4 +39,5 @@ const validateSaleProduct = (saleProduct) => {
 module.exports = {
   validateName,
   validateSaleProduct,
+  validateId,
 };

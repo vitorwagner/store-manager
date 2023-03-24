@@ -41,6 +41,9 @@ async function updateProduct(id, name) {
 }
 
 async function deleteProduct(id) {
+  const error = schema.validateId(id);
+  if (error.type) { return error; }
+
   const affectedRows = await productsModel.deleteProduct(id);
 
   if (affectedRows === 0) {

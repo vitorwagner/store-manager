@@ -150,6 +150,15 @@ describe("testa se o service de produtos", () => {
         message: "Product not found",
       });
     });
+
+    it("retorna um erro quando o id do produto não é válido", async () => {
+      const product = await ProductsService.deleteProduct("teste");
+
+      expect(product).to.be.deep.equal({
+        type: "INVALID_VALUE",
+        message: '"id" must be a number',
+      });
+    });
   });
 
   afterEach(() => {
