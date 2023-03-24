@@ -44,6 +44,55 @@ describe('testa a camada Model para Products', () => {
     });
   });
 
+  describe('testa se postProduct', () => {
+    it('retorna um id de produto', async () => {
+      const [productMock] = productsMock;
+
+      sinon.stub(connection, 'execute').resolves([{ insertId: 1}]);
+
+      const insertId = await ProductsModel.postProduct(productMock[0].name);
+
+      expect(insertId).to.be.deep.equal(1);
+    });
+  });
+
+  describe('testa se searchProductsByName', () => {
+    it('retorna um produto pelo nome', async () => {
+      const [productMock] = productsMock;
+
+      sinon.stub(connection, 'execute').resolves([productMock]);
+
+      const product = await ProductsModel.searchProductsByName(productMock[0].name);
+
+      expect(product).to.be.deep.equal(productMock);
+    });
+  });
+
+  describe('testa se updateProduct', () => {
+    it('retorna um produto atualizado', async () => {
+      const [productMock] = productsMock;
+
+      sinon.stub(connection, 'execute').resolves([{ affectedRows: 1 }]);
+      
+      const affectedRows = await ProductsModel.updateProduct(productMock[0].id, productMock[0].name);
+
+      expect(affectedRows).to.be.deep.equal(1);
+    });
+  });
+
+  describe('testa se deleteProduct', () => {
+    it('retorna um produto deletado', async () => {
+      const [productMock] = productsMock;
+
+      sinon.stub(connection, 'execute').resolves([{ affectedRows: 1 }]);
+
+      const affectedRows = await ProductsModel.deleteProduct(productMock[0].id);
+
+      expect(affectedRows).to.be.deep.equal(1);
+    });
+  });
+
+
   afterEach(() => {
     sinon.restore();
   }
