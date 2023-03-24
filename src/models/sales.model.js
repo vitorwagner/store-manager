@@ -34,9 +34,26 @@ async function postSaleProduct(saleId, productId, quantity) {
   );
 }
 
+async function deleteSale(id) {
+  const [{ affectedRows }] = await connection.execute(
+    'DELETE FROM sales WHERE id = ?',
+    [id],
+  );
+  return affectedRows;
+}
+
+async function deleteSaleProduct(id) {
+  await connection.execute(
+    'DELETE FROM sales_products WHERE sale_id = ?',
+    [id],
+  );
+}
+
 module.exports = {
   postSale,
   postSaleProduct,
   getAllSales,
   getSaleById,
+  deleteSale,
+  deleteSaleProduct,
 };

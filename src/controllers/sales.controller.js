@@ -24,8 +24,18 @@ async function postSaleProduct(req, res) {
   return res.status(201).json(message);
 }
 
+async function deleteSaleProduct(req, res) {
+  const { id } = req.params;
+  const { type, message } = await SalesService.deleteSaleProduct(id);
+
+  if (type) return res.status(errorMap.mapError(type)).json({ message });
+
+  return res.status(204).end();
+}
+
 module.exports = {
   postSaleProduct,
   getAllSales,
   getSaleById,
+  deleteSaleProduct,
 };

@@ -37,8 +37,21 @@ async function postSaleProduct(products) {
   return { message: { id, itemsSold: products } };
 }
 
+async function deleteSaleProduct(id) {
+  const affectedRows = await salesModel.deleteSale(id);
+  
+  if (affectedRows === 0) {
+    return { type: 'NOT_FOUND', message: 'Sale not found' };
+  }
+
+  await salesModel.deleteSaleProduct(id);
+
+  return { type: null, message: null };
+}
+
 module.exports = {
   postSaleProduct,
   getAllSales,
   getSalesById,
+  deleteSaleProduct,
 };
