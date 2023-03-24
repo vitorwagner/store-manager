@@ -22,6 +22,11 @@ async function postProduct(name) {
   return { id, message: name };
 }
 
+async function searchProductsByName(name) {
+  const products = await productsModel.searchProductsByName(name);
+  return { type: null, message: products };
+}
+
 async function updateProduct(id, name) {
   const error = schema.validateName(name);
   if (error.type) { return error; }
@@ -51,4 +56,5 @@ module.exports = {
   postProduct,
   updateProduct,
   deleteProduct,
+  searchProductsByName,
 };

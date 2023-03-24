@@ -24,6 +24,13 @@ async function postProduct(req, res) {
   return res.status(201).json({ id, name: message });
 }
 
+async function searchProductsByName(req, res) {
+  const { q } = req.query;
+  const { message } = await ProductsService.searchProductsByName(q);
+
+  return res.status(200).json(message);
+}
+
 async function updateProduct(req, res) {
   const { id } = req.params;
   const { name } = req.body;
@@ -47,6 +54,7 @@ module.exports = {
   getAllProducts,
   getProductById,
   postProduct,
+  searchProductsByName,
   updateProduct,
   deleteProduct,
 };

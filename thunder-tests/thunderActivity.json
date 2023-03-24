@@ -4,16 +4,22 @@
     "colId": "history",
     "containerId": "",
     "name": "http://localhost:3001/products",
-    "url": "http://localhost:3001/products/",
-    "method": "POST",
+    "url": "http://localhost:3001/products/search?q=tel",
+    "method": "GET",
     "sortNum": 0,
     "created": "2023-03-21T18:16:45.790Z",
-    "modified": "2023-03-23T18:22:43.581Z",
+    "modified": "2023-03-24T17:36:20.960Z",
     "headers": [],
-    "params": [],
+    "params": [
+      {
+        "name": "q",
+        "value": "tel",
+        "isPath": false
+      }
+    ],
     "body": {
       "type": "json",
-      "raw": "{\r\n  \"name\": \"ProdutoX\"\r\n}",
+      "raw": "{\n  \"name\": \"ProdutoX\"\n}",
       "form": []
     },
     "tests": []

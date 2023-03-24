@@ -23,6 +23,15 @@ async function postProduct(name) {
   return insertId;
 }
 
+async function searchProductsByName(name) {
+  const nameQuery = `%${name}%`;
+  const [products] = await connection.execute(
+    'SELECT * FROM products WHERE name LIKE ?',
+    [nameQuery],
+  );
+  return products;
+}
+
 async function updateProduct(id, name) {
   const [{ affectedRows }] = await connection.execute(
     'UPDATE products SET name = ? WHERE id = ?',
@@ -45,4 +54,5 @@ module.exports = {
   postProduct,
   updateProduct,
   deleteProduct,
+  searchProductsByName,
 };
