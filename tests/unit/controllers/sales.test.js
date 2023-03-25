@@ -96,14 +96,16 @@ describe("testa a camada Controller para Sales", () => {
       sinon
         .stub(SalesService, "postSaleProduct")
         .resolves({ message: dataMock.saleCreateResponse });
-      
+
       response.status = sinon.stub().returns(response);
       response.json = sinon.stub().returns();
 
       await SalesController.postSaleProduct(request, response);
 
       expect(response.status).to.have.been.calledWith(201);
-      expect(response.json).to.have.been.calledWith(dataMock.saleCreateResponse);
+      expect(response.json).to.have.been.calledWith(
+        dataMock.saleCreateResponse
+      );
     });
 
     it("retorna uma mensagem de erro quando não encontra um produto", async () => {
@@ -113,7 +115,7 @@ describe("testa a camada Controller para Sales", () => {
       sinon
         .stub(SalesService, "postSaleProduct")
         .resolves({ type: "NOT_FOUND", message: "Product not found" });
-      
+
       response.status = sinon.stub().returns(response);
       response.json = sinon.stub().returns();
 
@@ -133,8 +135,10 @@ describe("testa a camada Controller para Sales", () => {
 
       sinon
         .stub(SalesService, "updateSaleProduct")
-        .resolves({ message: { saleId: 1, itemsUpdated: dataMock.rightSaleBody } });
-      
+        .resolves({
+          message: { saleId: 1, itemsUpdated: dataMock.rightSaleBody },
+        });
+
       response.status = sinon.stub().returns(response);
       response.json = sinon.stub().returns();
 
@@ -154,7 +158,7 @@ describe("testa a camada Controller para Sales", () => {
       sinon
         .stub(SalesService, "updateSaleProduct")
         .resolves({ type: "NOT_FOUND", message: "Sale not found" });
-      
+
       response.status = sinon.stub().returns(response);
       response.json = sinon.stub().returns();
 
@@ -167,13 +171,16 @@ describe("testa a camada Controller para Sales", () => {
     });
 
     it("retorna uma mensagem de erro quando não encontra um produto", async () => {
-      const request = { params: { id: 1 }, body: dataMock.nonexistentProductIdBody };
+      const request = {
+        params: { id: 1 },
+        body: dataMock.nonexistentProductIdBody,
+      };
       const response = {};
 
       sinon
         .stub(SalesService, "updateSaleProduct")
         .resolves({ type: "NOT_FOUND", message: "Product not found" });
-      
+
       response.status = sinon.stub().returns(response);
       response.json = sinon.stub().returns();
 
@@ -185,7 +192,6 @@ describe("testa a camada Controller para Sales", () => {
       });
     });
   });
-
 
   describe("testa se deleteSaleProduct", () => {
     it("retorna uma mensagem de sucesso ao deletar uma venda", async () => {

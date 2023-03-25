@@ -79,6 +79,106 @@ describe("testa se o service de sales", () => {
         },
       });
     });
+
+    it("retorna uma mensagem de erro quando não encontra um produto com o id", async () => {
+      sinon.stub(ProductsModel, "getProductById").resolves(undefined);
+
+      const message = await SalesService.postSaleProduct(
+        dataMock.rightSaleBody
+      );
+
+      expect(message).to.be.deep.equal({
+        type: "NOT_FOUND",
+        message: "Product not found",
+      });
+    });
+
+    it("retorna uma mensagem de erro quando a quantidade de produto é inválida", async () => {
+      sinon.stub(ProductsModel, "getProductById").resolves(1);
+
+      const message = await SalesService.postSaleProduct(
+        dataMock.wrongZeroNegativeBody
+      );
+
+      expect(message).to.be.deep.equal({
+        type: "INVALID_VALUE",
+        message: '"quantity" must be greater than or equal to 1',
+      });
+    });
+
+    it("retorna uma mensagem de erro quando o id do produto não é informado", async () => {
+      const message = await SalesService.postSaleProduct(
+        dataMock.wrongSaleNotProductIdBody
+      );
+
+      expect(message).to.be.deep.equal({
+        type: "NAME_IS_REQUIRED",
+        message: '"productId" is required',
+      });
+    });
+  });
+
+  describe("testa se updateSaleProduct", () => {
+    it("retorna uma mensagem de sucesso quando atualiza uma venda", async () => {
+      sinon.stub(ProductsModel, "getProductById").resolves(1);
+
+      sinon.stub(SalesModel, "getSaleById").resolves(salesMock[0]);
+
+      const message = await SalesService.updateSaleProduct(
+        1,
+        dataMock.rightSaleBody
+      );
+
+      expect(message).to.be.deep.equal({
+        message: {
+          saleId: 1,
+          itemsUpdated: dataMock.rightSaleBody,
+        },
+      });
+    });
+
+    it("retorna uma mensagem de erro quando não encontra uma venda com o id", async () => {
+      sinon.stub(ProductsModel, "getProductById").resolves(1);
+      sinon.stub(SalesModel, "getSaleById").resolves([]);
+
+      const message = await SalesService.updateSaleProduct(
+        1,
+        dataMock.rightSaleBody
+      );
+
+      expect(message).to.be.deep.equal({
+        type: "NOT_FOUND",
+        message: "Sale not found",
+      });
+    });
+
+    it("retorna uma mensagem de erro quando não encontra um produto com o id", async () => {
+      sinon.stub(ProductsModel, "getProductById").resolves(undefined);
+
+      const message = await SalesService.updateSaleProduct(
+        1,
+        dataMock.nonexistentProductIdBody
+      );
+
+      expect(message).to.be.deep.equal({
+        type: "NOT_FOUND",
+        message: "Product not found",
+      });
+    });
+
+    it("retorna uma mensagem de erro quando a quantidade de produto é inválida", async () => {
+      sinon.stub(ProductsModel, "getProductById").resolves(1);
+
+      const message = await SalesService.updateSaleProduct(
+        1,
+        dataMock.wrongZeroNegativeBody
+      );
+
+      expect(message).to.be.deep.equal({
+        type: "INVALID_VALUE",
+        message: '"quantity" must be greater than or equal to 1',
+      });
+    });
   });
 
   describe("testa se deleteSaleProduct", () => {

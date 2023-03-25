@@ -47,7 +47,9 @@ describe("testa se o controller de produtos", () => {
       const [productMock] = productsMock;
       const request = { params: { id: 1 } };
       const response = {};
-      sinon.stub(ProductsService, "getProductById").resolves({ type: null, message: productMock });
+      sinon
+        .stub(ProductsService, "getProductById")
+        .resolves({ type: null, message: productMock });
 
       response.status = sinon.stub().returns(response);
       response.json = sinon.stub().returns();
@@ -101,12 +103,10 @@ describe("testa se o controller de produtos", () => {
       response.status = sinon.stub().returns(response);
       response.json = sinon.stub().returns();
 
-      sinon
-        .stub(ProductsService, "postProduct")
-        .resolves({
-          type: "NAME_IS_REQUIRED",
-          message: "'name' is required",
-        });
+      sinon.stub(ProductsService, "postProduct").resolves({
+        type: "NAME_IS_REQUIRED",
+        message: "'name' is required",
+      });
 
       await ProductsController.postProduct(request, response);
 
@@ -125,7 +125,9 @@ describe("testa se o controller de produtos", () => {
       response.status = sinon.stub().returns(response);
       response.json = sinon.stub().returns();
 
-      sinon.stub(ProductsService, "searchProductsByName").resolves({ message: productMock });
+      sinon
+        .stub(ProductsService, "searchProductsByName")
+        .resolves({ message: productMock });
 
       await ProductsController.searchProductsByName(request, response);
 
@@ -144,7 +146,7 @@ describe("testa se o controller de produtos", () => {
       sinon
         .stub(ProductsService, "updateProduct")
         .resolves({ type: null, message: dataMock.productUpdateBody.name });
-      
+
       await ProductsController.updateProduct(request, response);
 
       expect(response.status).to.have.been.calledWith(200);
@@ -163,14 +165,14 @@ describe("testa se o controller de produtos", () => {
       sinon
         .stub(ProductsService, "updateProduct")
         .resolves({ type: "NOT_FOUND", message: "Product not found" });
-      
+
       await ProductsController.updateProduct(request, response);
 
       expect(response.status).to.have.been.calledWith(404);
       expect(response.json).to.have.been.calledWith({
         message: "Product not found",
       });
-    });      
+    });
   });
 
   describe("testa se deleteProduct", () => {
@@ -180,7 +182,9 @@ describe("testa se o controller de produtos", () => {
       response.status = sinon.stub().returns(response);
       response.end = sinon.stub().returns();
 
-      sinon.stub(ProductsService, "deleteProduct").resolves({ type: null, message: null });
+      sinon
+        .stub(ProductsService, "deleteProduct")
+        .resolves({ type: null, message: null });
 
       await ProductsController.deleteProduct(request, response);
 
@@ -198,7 +202,7 @@ describe("testa se o controller de produtos", () => {
       sinon
         .stub(ProductsService, "deleteProduct")
         .resolves({ type: "NOT_FOUND", message: "Product not found" });
-      
+
       await ProductsController.deleteProduct(request, response);
 
       expect(response.status).to.have.been.calledWith(404);
@@ -207,7 +211,6 @@ describe("testa se o controller de produtos", () => {
       });
     });
   });
-
 
   afterEach(() => {
     sinon.restore();

@@ -5,6 +5,7 @@ const { expect } = chai;
 
 const ProductsService = require("../../../src/services/products.services");
 const ProductsModel = require("../../../src/models/products.model");
+const dataMock = require("../../Mocks/DataMock");
 
 const productsMock = [
   {
@@ -72,6 +73,15 @@ describe("testa se o service de produtos", () => {
       expect(product).to.be.deep.equal({
         type: "NAME_IS_REQUIRED",
         message: '"name" is required',
+      });
+    });
+
+    it("retorna um erro quando o nome do produto é menor que 5 caracteres", async () => {
+      const product = await ProductsService.postProduct(dataMock.wrongSizeProductBody);
+
+      expect(product).to.be.deep.equal({
+        type: "INVALID_VALUE",
+        message: '"name" length must be at least 5 characters long',
       });
     });
   });
